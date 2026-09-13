@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIMPUS-mini | Tambah Anggota</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      nav ul {
+        display: flex;
+        gap: 15px;
+        list-style: none;
+        padding: 0;
+      }
+      form {
+        max-width: 500px;
+        margin-top: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+      input,
+      select,
+      button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+      }
+      button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SIMPUS-Mini</h1>
+      <nav>
+        <ul>
+          <li><a href="Index.html">Beranda</a></li>
+          <li><a href="list.html">Daftar Anggota</a></li>
+          <li><a href="tambah.html">Tambah Anggota</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <h2>Tambah Anggota</h2>
+
+        <form id="formAnggota">
+          <label for="nama">Nama</label>
+          <input type="text" id="nama" name="nama" placeholder="Masukkan nama" required />
+
+          <label for="alamat">Alamat</label>
+          <input type="text" id="alamat" name="alamat" placeholder="Masukkan alamat" required />
+
+          <label for="telepon">No. Telepon</label>
+          <input type="tel" id="telepon" name="telepon" placeholder="Masukkan nomor telepon" required />
+
+          <label for="jenisKelamin">Jenis Kelamin</label>
+          <select id="jenisKelamin" name="jenisKelamin" required>
+            <option value="">Pilih jenis kelamin</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>
+
+          <button type="submit">Simpan Anggota</button>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      const STORAGE_KEY = 'simpus-anggota';
+
+      document.getElementById('formAnggota').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const nama = document.getElementById('nama').value.trim();
+        const alamat = document.getElementById('alamat').value.trim();
+        const telepon = document.getElementById('telepon').value.trim();
+        const jenisKelamin = document.getElementById('jenisKelamin').value;
+
+        if (!nama || !alamat || !telepon || !jenisKelamin) {
+          alert('Semua data harus diisi');
+          return;
+        }
+
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+        data.push({
+          nama,
+          alamat,
+          telepon,
+          jenisKelamin
+        });
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        alert('Data anggota berhasil ditambahkan');
+        window.location.href = 'list.html';
+      });
+    </script>
+  </body>
+</html>

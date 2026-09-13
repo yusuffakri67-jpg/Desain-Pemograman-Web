@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SIMPUS-mini | Daftar Anggota</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      nav ul {
+        display: flex;
+        gap: 15px;
+        list-style: none;
+        padding: 0;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+      }
+      th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+      }
+      button {
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+      }
+      .btn-danger {
+        background-color: #d9534f;
+        color: white;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>SIMPUS-Mini</h1>
+      <nav>
+        <ul>
+          <li><a href="Index.html">Beranda</a></li>
+          <li><a href="list.html">Daftar Anggota</a></li>
+          <li><a href="tambah.html">Tambah Anggota</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <h2>Daftar Anggota</h2>
+        <a href="tambah.html">
+          <button class="btn-primary" type="button">+ Tambah Anggota</button>
+        </a>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Alamat</th>
+              <th>No. Telepon</th>
+              <th>Jenis Kelamin</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="anggotaTableBody"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script>
+      const STORAGE_KEY = 'simpus-anggota';
+      const sampleData = [
+        {
+          nama: 'John Doe',
+          alamat: 'Jl. Merdeka No. 123',
+          telepon: '081234567890',
+          jenisKelamin: 'Laki-laki'
+        },
+        {
+          nama: 'Jane Smith',
+          alamat: 'Jl. Sudirman No. 456',
+          telepon: '081987654321',
+          jenisKelamin: 'Perempuan'
+        }
+      ];
+
+      function loadData() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(sampleData));
+          return sampleData;
+        }
+
+        try {
+          const parsed = JSON.parse(stored);
+          return Array.isArray(parsed) ? parsed : sampleData;
+        } catch {
+          return sampleData;
+        }
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById('anggotaTableBody');
+        const data = loadData();
+
+        tbody.innerHTML = '';
+
+        data.forEach((anggota, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${anggota.nama}</td>
+            <td>${anggota.alamat}</td>
+            <td>${anggota.telepon}</td>
+            <td>${anggota.jenisKelamin}</td>
+            <td>
+              <button type="button" onclick="hapusAnggota(${index})" class="btn-danger">Hapus</button>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+
+      function hapusAnggota(index) {
+        const data = loadData();
+        data.splice(index, 1);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        renderTable();
+      }
+
+      renderTable();
+    </script>
+  </body>
+</html>
