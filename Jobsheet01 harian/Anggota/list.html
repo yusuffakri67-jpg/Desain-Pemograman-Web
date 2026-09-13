@@ -1,141 +1,82 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SIMPUS-mini | Daftar Anggota</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-      }
-      nav ul {
-        display: flex;
-        gap: 15px;
-        list-style: none;
-        padding: 0;
-      }
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        margin-top: 20px;
-      }
-      th, td {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-align: left;
-      }
-      button {
-        padding: 6px 10px;
-        cursor: pointer;
-      }
-      .btn-primary {
-        background-color: #4caf50;
-        color: white;
-        border: none;
-      }
-      .btn-danger {
-        background-color: #d9534f;
-        color: white;
-        border: none;
-      }
-    </style>
-  </head>
-  <body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>SIMPUS-Mini | Daftar Buku</title>
+</head>
+
+<body>
     <header>
-      <h1>SIMPUS-Mini</h1>
-      <nav>
-        <ul>
-          <li><a href="Index.html">Beranda</a></li>
-          <li><a href="list.html">Daftar Anggota</a></li>
-          <li><a href="tambah.html">Tambah Anggota</a></li>
-        </ul>
-      </nav>
+        <h1>SIMPUS-Mini</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Beranda</a></li>
+                <li><a href="../buku/list.html">Daftar Buku</a></li>
+                <li><a href="buku/tambah.html">Tambah Buku</a></li>
+                <li><a href="list.html">Daftar Anggota</a></li>
+            </ul>
+        </nav>
     </header>
-
     <main>
-      <section>
-        <h2>Daftar Anggota</h2>
-        <a href="tambah.html">
-          <button class="btn-primary" type="button">+ Tambah Anggota</button>
-        </a>
+        <section>
+            <h2>Daftar Buku</h2>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th rowspan="2">No. Anggota</th>
+                        <th rowspan="2">Nama</th>
+                        <th rowspan="2">Alamat</th>
+                        <th rowspan="2">No. HP</th>
+                        <th colspan="2">JenisKelamin</th>
+                        <th colspan="2">Aksi</th>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Nama</th>
-              <th>Alamat</th>
-              <th>No. Telepon</th>
-              <th>Jenis Kelamin</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="anggotaTableBody"></tbody>
-        </table>
-      </section>
+                    </tr>
+                    <tr>
+                        <th>Perempuan</th>
+                        <th>Laki-Laki</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Adamska</td>
+                        <td>OuterHeaven</td>
+                        <td>xxxxxx</td>
+                        <td></td>
+                        <td>v</td>
+                        <td>
+                            <button type="button">Edit</button>
+                        </td>
+                        <td>
+                            <button type="button">Hapus</button>
+                        </td>
+                    </tr>
+                     <tr>
+                        <td>2</td>
+                        <td>Princess</td>
+                        <td>Shadow Moses</td>
+                        <td>xxxxxx</td>
+                        <td>v</td>
+                        <td></td>
+                        <td>
+                            <button type="button">Edit</button>
+                        </td>
+                        <td>
+                            <button type="button">Hapus</button>
+                        </td>
+                    </tr>
+            </table>
+        </section>
     </main>
 
-    <script>
-      const STORAGE_KEY = 'simpus-anggota';
-      const sampleData = [
-        {
-          nama: 'John Doe',
-          alamat: 'Jl. Merdeka No. 123',
-          telepon: '081234567890',
-          jenisKelamin: 'Laki-laki'
-        },
-        {
-          nama: 'Jane Smith',
-          alamat: 'Jl. Sudirman No. 456',
-          telepon: '081987654321',
-          jenisKelamin: 'Perempuan'
-        }
-      ];
+    <footer>
+        <p>&copy; 2026 SIMPUS-Mini &mdash; Jobsheet 1</p>
+    </footer>
 
-      function loadData() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(sampleData));
-          return sampleData;
-        }
+    <body>
 
-        try {
-          const parsed = JSON.parse(stored);
-          return Array.isArray(parsed) ? parsed : sampleData;
-        } catch {
-          return sampleData;
-        }
-      }
-
-      function renderTable() {
-        const tbody = document.getElementById('anggotaTableBody');
-        const data = loadData();
-
-        tbody.innerHTML = '';
-
-        data.forEach((anggota, index) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${anggota.nama}</td>
-            <td>${anggota.alamat}</td>
-            <td>${anggota.telepon}</td>
-            <td>${anggota.jenisKelamin}</td>
-            <td>
-              <button type="button" onclick="hapusAnggota(${index})" class="btn-danger">Hapus</button>
-            </td>
-          `;
-          tbody.appendChild(row);
-        });
-      }
-
-      function hapusAnggota(index) {
-        const data = loadData();
-        data.splice(index, 1);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        renderTable();
-      }
-
-      renderTable();
-    </script>
-  </body>
 </html>
